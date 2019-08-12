@@ -16,6 +16,7 @@ public class T {
             e.printStackTrace();
         }
         m2();
+        System.out.println("11");
     }
 
     synchronized void m2() {
@@ -25,5 +26,10 @@ public class T {
             e.printStackTrace();
         }
         System.out.println(" m2"); // 这句话会打印，调用m2时，不会发生死锁
+    }
+
+    public static void main(String[] args) {
+        T t = new T();
+        new Thread(()->t.m1()).start();
     }
 }

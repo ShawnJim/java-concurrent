@@ -56,7 +56,7 @@ public class MyContainer2 {
 添加 volatile ，使list发生变化时，主动通知其他线程，更新工作空间
 
 上述代码，共有以下几个问题：
-1. 不够精确，当container.size == 5 还未执行break时，有可能被其他线程抢占；或者 container.add() 之后，还未打印，就被 t2 判断size为5 直接推出了
+1. 不够精确，当container.size == 5 还未执行break时，有可能被其他线程抢占；
 2. 损耗性能，t2 线程，一直在走while循环，很浪费性能
 
  */

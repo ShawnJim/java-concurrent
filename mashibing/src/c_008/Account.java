@@ -30,12 +30,13 @@ public class Account {
         this.balance = balance;
     }
 
-    public /*synchronized*/ double getBalance() {
+    public synchronized double getBalance() {
         return this.balance;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Account a = new Account();
+        Thread.sleep(1000);
         new Thread(() -> a.set("张三", 100.0)).start();
         System.out.println(a.getBalance()); // 0.0 
         try {

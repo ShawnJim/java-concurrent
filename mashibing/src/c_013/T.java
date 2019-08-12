@@ -11,13 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class T {
 
-    volatile int count = 0;
-    /*AtomicInteger count = new AtomicInteger(0);*/
+    /*volatile int count = 0;*/
+    AtomicInteger count = new AtomicInteger(0);
     
     /*synchronized*/ void m() {
         for (int i = 0; i < 10000; i++) {
-            count++;
-            /*count.incrementAndGet();*/
+//            count++;
+            count.incrementAndGet();
         }
     }
 
@@ -52,6 +52,6 @@ public class T {
 
 解决方案：
 1. 在方法上加上synchronized即可，synchronized既保证可见性，又保证原子性
-2. 使用AtomicInteger代替int（AtomicXXX 代表此类中的所有方法都是原子操作，并且可以保证可见性）
+2. 使用AtomicInteger代替int（）
 
  */

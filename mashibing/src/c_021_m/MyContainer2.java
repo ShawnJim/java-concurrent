@@ -1,5 +1,6 @@
 package c_021_m;
 
+import java.sql.Time;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -33,7 +34,7 @@ public class MyContainer2<T> {
     private Condition consumer = lock.newCondition();
 
 
-    public synchronized void put(T t) {
+    public  void put(T t) {
         lock.lock();
         try {
             while (MAX == count) {
@@ -49,12 +50,14 @@ public class MyContainer2<T> {
         }
     }
 
-    public synchronized T get() {
+    public  T get() {
         lock.lock();
         try {
             while (list.size() == 0) {
+                producer.signalAll();
                 consumer.await();
             }
+            producer.signalAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -62,16 +65,21 @@ public class MyContainer2<T> {
         }
         T t = list.removeFirst();
         count--;
-        producer.signalAll();
         return t;
     }
 
     public static void main(String[] args) {
         MyContainer2<String> c = new MyContainer2<>();
         // 启动消费者线程
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             new Thread(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 for (int j = 0; j < 5; j++) {
+                    System.out.println("容器内所剩值："+c.count+" ; c: "+c.list.toString());
                     System.out.println(c.get());
                 }
             }, "c_" + i ).start();
@@ -85,7 +93,13 @@ public class MyContainer2<T> {
 
         for (int i = 0; i < 2; i++) {
             new Thread(()->{
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 for (int j = 0; j < 2; j++) {
+                    System.out.println("插入值: "+Thread.currentThread().getName() + " " + j);
                     c.put(Thread.currentThread().getName() + " " + j);
                 }
             }, "p_" + i).start();

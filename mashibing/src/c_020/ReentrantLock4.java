@@ -20,10 +20,11 @@ public class ReentrantLock4 {
             lock.lock();
             try {
                 System.out.println("t1 start");
-                TimeUnit.SECONDS.sleep(Integer.MAX_VALUE);  // 线程一直占用锁
+                TimeUnit.SECONDS.sleep(10);  // 线程一直占用锁
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
+                System.out.println("t1 释放锁");
                 lock.unlock();
             }
             
@@ -32,6 +33,7 @@ public class ReentrantLock4 {
         Thread t2 = new Thread(() -> {
 
             try {
+                TimeUnit.SECONDS.sleep(1);
                 lock.lockInterruptibly(); // t2 尝试获取锁
                 System.out.println("t2 start");
             } catch (InterruptedException e) {

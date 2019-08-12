@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class T {
 
     /*volatile*/ boolean running = true;   // 对比有无volatile的情况下，整个程序运行结果的区别
-    
+
     void m() {
         System.out.println(" m start ");
         while (running) { // 直到主线程将running设置为false，T线程才会退出

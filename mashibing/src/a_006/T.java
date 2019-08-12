@@ -20,7 +20,6 @@ public class T {
         T t = new T();
         Thread thread = new Thread(t::m);
         thread.start();
-        
         try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {

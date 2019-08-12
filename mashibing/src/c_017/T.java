@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class T {
 
-    Object o = new Object();
+    final Object o = new Object();
     
     void m() {
         synchronized (o) {
@@ -35,7 +35,7 @@ public class T {
         }
 
         Thread thread2 = new Thread(t::m, "线程2");
-        t.o = new Object(); // 改变锁引用, 线程2也有机会运行，否则一直都是线程1 运行
+//        t.o = new Object(); // 改变锁引用, 线程2也有机会运行，否则一直都是线程1 运行
         thread2.start();
     }
 
